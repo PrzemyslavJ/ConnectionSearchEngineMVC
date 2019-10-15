@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="container">
+    <h1>Koleje Małopolskie</h1>
+    <h3>Wyszukaj Połączenie Szybkiej koleji aglomeracyjnej</h3>
+    <form asp-action="Search">
+        <div id="in1"> <input type="text" class="form-control" name="FirstPlace" /> </div>
+        <span></span>
+        <div id="in2"> <input type="text" class="form-control" name="SecondPlace" />  </div>
+        <span></span>
+        <div id="in3"> <input type="time" class="form-control" name="Time"/>  </div>
+        <span></span>
+        <div id="in4"> <input type="submit" class="btn btn-info" value="Szukaj" /> </div>
+    </form>
+</div>
+
+<div>
+    <h3>Zaloguj się do panelu Administratora</h3>
+    @ViewBag.FailCommunicate
+    <form asp-action="AdministratorPanel">
+        <p> <input type="text" name="Login" />  </p>
+        <p> <input password="text" name="Password" /> </p>
+        <input type ="submit" value="Loguj"/>
+    </form>
+
+</div>
