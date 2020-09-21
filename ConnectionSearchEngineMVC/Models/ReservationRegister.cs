@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ConnectionSearchEngineMVC.Models
 {
-    public class ReservationData
+    public partial class ReservationRegister
     {
+        public int Id {get; set;}
         [Required(ErrorMessage = "Proszę podać typ biletu! ")]
         public string TypeOfTicket { get; set; }
         [Required(ErrorMessage = "Proszę podać swoje imię i nazwisko! ")]
@@ -21,6 +22,5 @@ namespace ConnectionSearchEngineMVC.Models
         public TimeSpan? FirstArrival { get; set; }
         public TimeSpan? SecondArrival { get; set; }
         public string Train { get; set; }
-
     }
 }

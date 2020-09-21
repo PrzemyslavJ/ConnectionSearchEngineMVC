@@ -12,6 +12,7 @@ namespace ConnectionSearchEngineMVC.Models
         public virtual DbSet<Ska2SedKrk> Ska2SedKrk { get; set; }
         public virtual DbSet<Ska3KrkTar> Ska3KrkTar { get; set; }
         public virtual DbSet<Ska3TarKrk> Ska3TarKrk { get; set; }
+        public virtual DbSet<ReservationRegister> ReservationRegister { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -111,6 +112,42 @@ namespace ConnectionSearchEngineMVC.Models
                 entity.Property(e => e.Train)
                     .IsRequired()
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<ReservationRegister>(entity =>
+            {
+                entity.ToTable("ReservationRegister");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.TypeOfTicket)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.SurName)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Phone)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.FirstStation)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.SecondStation)
+                    .IsRequired()
+                    .HasMaxLength(50);
+                
+                entity.Property(e => e.Train)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
             });
         }
     }

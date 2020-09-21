@@ -23,12 +23,13 @@ namespace ConnectionSearchEngineMVC.Controllers
             return View();
         }
 
+        RailwayConnectionOfLesserPolandContext context = new RailwayConnectionOfLesserPolandContext();
+        
+
         [HttpPost]
         public IActionResult Search(string FirstPlace, string SecondPlace, TimeSpan time)
         {
             TimeSpan timeBorder = time.Add(TimeSpan.FromHours(3));
-
-            RailwayConnectionOfLesserPolandContext context = new RailwayConnectionOfLesserPolandContext();
 
             var AllRecords = context.Ska1KrkWiel.Select(x => new { x.Id, x.Station, x.Train, x.TimeArrival, IdRoute = 1 }).
                               Union(context.Ska1WielKrk.Select(x => new { x.Id, x.Station, x.Train, x.TimeArrival, IdRoute = 2 })).
@@ -36,11 +37,11 @@ namespace ConnectionSearchEngineMVC.Controllers
                               Union(context.Ska2SedKrk.Select(x => new { x.Id, x.Station, x.Train, x.TimeArrival, IdRoute = 4 })).
                               Union(context.Ska3KrkTar.Select(x => new { x.Id, x.Station, x.Train, x.TimeArrival, IdRoute = 5 })).
                               Union(context.Ska3TarKrk.Select(x => new { x.Id, x.Station, x.Train, x.TimeArrival, IdRoute = 6 }));
-            
-             
+
+
             var FirstResult = from x in AllRecords
-            where x.Station == FirstPlace && (x.TimeArrival >=  time && x.TimeArrival <= timeBorder)
-            select new { x.Id, x.Station, x.Train, x.TimeArrival, x.IdRoute};
+                              where x.Station == FirstPlace && (x.TimeArrival >= time && x.TimeArrival <= timeBorder)
+                              select new { x.Id, x.Station, x.Train, x.TimeArrival, x.IdRoute };
 
             List<ListToModel> ModelList = new List<ListToModel>();
 
@@ -75,11 +76,11 @@ namespace ConnectionSearchEngineMVC.Controllers
                 return View("CommunicateView");
             }
 
-            }
-        
+        }
+
 
         [HttpGet]
-        public IActionResult Reservation(string FS,TimeSpan? FA, string SS, TimeSpan? SA, string T)
+        public IActionResult Reservation(string FS, TimeSpan? FA, string SS, TimeSpan? SA, string T)
         {
 
             ViewBag.FirstSt = FS;
@@ -95,7 +96,7 @@ namespace ConnectionSearchEngineMVC.Controllers
         {
             if (Login == "Przemek" || Password == "1234")
             {
-                return View("AdministratorPanel");
+                return View("AdministratorPanel",context.ReservationRegister);
             }
             else
             {
@@ -103,7 +104,7 @@ namespace ConnectionSearchEngineMVC.Controllers
                 return View("Index");
             }
         }
-        
+
         [HttpPost]
         public IActionResult Reservation(ReservationData reservationData)
         {
@@ -118,7 +119,58 @@ namespace ConnectionSearchEngineMVC.Controllers
                 return View("CommunicateView");
             }
         }
-  
+
+
+        [HttpPost]
+        public IActionResult Schedule(int Option)
+        {
+            List<ScheduleStd> schedule = new List<ScheduleStd>();
+            switch (Option)
+            {
+                case 1:
+                    ViewBag.Name= "Trasa nr.1 Kraków - Wieliczka";
+                    var schedules = context.Ska1KrkWiel.Select(x => new { x.Station, x.Train, x.TimeArrival }).OrderBy(x => x.Station);
+                    foreach (var i in schedules)
+                        schedule.Add(new ScheduleStd(i.Station, i.Train, i.TimeArrival));
+                    break;
+                case 2:
+                    ViewBag.Name = "Trasa nr.2 Wieliczka - Kraków";
+                    schedules = context.Ska1WielKrk.Select(x => new { x.Station, x.Train, x.TimeArrival }).OrderBy(x => x.Train);
+                    foreach (var i in schedules)
+                        schedule.Add(new ScheduleStd(i.Station, i.Train, i.TimeArrival));
+                    break;
+                case 3:
+                    ViewBag.Name = "Trasa nr.2 Kraków - Sędziszów";
+                    schedules = context.Ska2KrkSed.Select(x => new { x.Station, x.Train, x.TimeArrival }).OrderBy(x => x.Train);
+                    foreach (var i in schedules)
+                        schedule.Add(new ScheduleStd(i.Station, i.Train, i.TimeArrival));
+                    break;
+                case 4:
+                    ViewBag.Name = "Trasa nr.2 Sędziszów - Kraków";
+                    schedules = context.Ska2SedKrk.Select(x => new { x.Station, x.Train, x.TimeArrival }).OrderBy(x => x.Train);
+                    foreach (var i in schedules)
+                        schedule.Add(new ScheduleStd(i.Station, i.Train, i.TimeArrival));
+                    break;
+                case 5:
+                    ViewBag.Name = "Trasa nr.3 Kraków - Tarnów";
+                    schedules = context.Ska3KrkTar.Select(x => new { x.Station, x.Train, x.TimeArrival }).OrderBy(x => x.Train);
+                    foreach (var i in schedules)
+                        schedule.Add(new ScheduleStd(i.Station, i.Train, i.TimeArrival));
+                    break;
+                case 6:
+                    ViewBag.Name = "Trasa nr.3 Tarnów - Kraków";
+                    schedules = context.Ska3TarKrk.Select(x => new { x.Station, x.Train, x.TimeArrival }).OrderBy(x => x.Train);
+                    foreach (var i in schedules)
+                        schedule.Add(new ScheduleStd(i.Station, i.Train, i.TimeArrival));
+                    break;
+                default:
+                    schedule = null;
+                    break;
+            }
+            
+            return View("Schedule", schedule);
+        }
+        
 
         public IActionResult Error()
         {
