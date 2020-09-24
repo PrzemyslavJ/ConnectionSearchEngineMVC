@@ -82,7 +82,7 @@ namespace ConnectionSearchEngineMVC.Controllers
         [HttpGet]
         public IActionResult Reservation(string FS, TimeSpan? FA, string SS, TimeSpan? SA, string T)
         {
-
+            ViewBag.IdCurrent = context.ReservationRegister.Count() + 1;
             ViewBag.FirstSt = FS;
             ViewBag.FirstAr = FA;
             ViewBag.SecondSt = SS;
@@ -106,10 +106,12 @@ namespace ConnectionSearchEngineMVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Reservation(ReservationData reservationData)
+        public IActionResult Reservation(ReservationRegister reservationRegister)
         {
             if (ModelState.IsValid)
             {
+                context.ReservationRegister.Add(reservationRegister);
+                context.SaveChanges();
                 ViewBag.Communicate = "Dokonano pomyślnej rezerwacji !";
                 return View("CommunicateView");
             }
@@ -170,7 +172,50 @@ namespace ConnectionSearchEngineMVC.Controllers
             
             return View("Schedule", schedule);
         }
-        
+
+        public IActionResult EditReservation(int Id)
+        {
+            var EditableRes = context.ReservationRegister.Where(x => x.Id == Id).FirstOrDefault();
+            return View("EditReservation", EditableRes);
+        }
+
+        [HttpPost]
+        public IActionResult EditReservation(ReservationRegister EditRecord)
+        {
+            if (ModelState.IsValid)
+            {
+                var EditableRes = context.ReservationRegister.Where(x => x.Id == EditRecord.Id).FirstOrDefault();
+                context.ReservationRegister.Remove(EditableRes);
+                context.SaveChanges();
+                context.ReservationRegister.Add(EditRecord);
+                context.SaveChanges();
+                ViewBag.Communicate = "Dokonano pomyślnej edycji rezerwacji !";
+                return View("CommunicateView");
+            }
+            else
+            {
+                ViewBag.Communicate = "Wypełnij wszystkie dane !";
+                return View("CommunicateView");
+            }
+            
+        }
+
+        public IActionResult DeleteReservation(int Id)
+        {
+            var ToDeleteRec = context.ReservationRegister.Where(x => x.Id == Id).FirstOrDefault();
+            return View("DeleteReservation", ToDeleteRec);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteReservationRec(int IdRec)
+        {
+                var DeleteRec = context.ReservationRegister.Where(x => x.Id == IdRec).FirstOrDefault();
+                context.ReservationRegister.Remove(DeleteRec);
+                context.SaveChanges();
+                ViewBag.Communicate = "Dokonano pomyślnego usunięcia rezerwacji !";
+                return View("CommunicateView");
+            
+        }
 
         public IActionResult Error()
         {

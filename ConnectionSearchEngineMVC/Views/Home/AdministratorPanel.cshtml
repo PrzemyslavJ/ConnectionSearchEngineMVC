@@ -25,6 +25,7 @@
                 <th>Godzina odjazdu </th>
                 <th>Godzina przybycia </th>
                 <th>Nr pociągu </th>
+                <th>Data rezerwacji </th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +40,9 @@
                 <td>@i.FirstArrival</td>
                 <td>@i.SecondArrival</td>
                 <td>@i.Train</td>
+                <td>@i.Date.Date</td>
+                <td>@Html.ActionLink("Edytuj", "EditReservation", "Home", new { id = @i.Id }, null)</td>
+                <td>@Html.ActionLink("Usuń", "DeleteReservation", "Home", new { id = @i.Id }, null)</td>
             </tr>
             }
 

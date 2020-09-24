@@ -1,5 +1,5 @@
 ﻿
-@model ReservationData
+@model ReservationRegister
 @{
     ViewData["Title"] = "Reservation";
 }
@@ -12,14 +12,16 @@
 {
     @Html.ValidationSummary()
 
-    <p>
-        Start: <input type="text" name="FirstStation" readonly="readonly" value=@ViewBag.FirstSt />
-        <br />przyjazd: <input type="time" name="FirstArrival" readonly="readonly" value=@ViewBag.FirstAr />
-        <br />Koniec: <input type="text" name="SecondStation" readonly="readonly" value=@ViewBag.SecondSt />
-        <br />Przyjazd: <input type="time" name="SecondArrival" readonly="readonly" value=@ViewBag.SecondAr />
-        <br />Pociąg: <input type="text" name="Train" readonly="readonly" value=@ViewBag.Tr />
-    </p>
+<p>
+    <br /> Nr rezerwacji: <input type="text" name="Id" readonly="readonly" value=@ViewBag.IdCurrent />
+    <br />Start: <input type="text" name="FirstStation" readonly="readonly" value=@ViewBag.FirstSt />
+    <br />przyjazd: <input type="time" name="FirstArrival" readonly="readonly" value=@ViewBag.FirstAr />
+    <br />Koniec: <input type="text" name="SecondStation" readonly="readonly" value=@ViewBag.SecondSt />
+    <br />Przyjazd: <input type="time" name="SecondArrival" readonly="readonly" value=@ViewBag.SecondAr />
+    <br />Pociąg: <input type="text" name="Train" readonly="readonly" value=@ViewBag.Tr />
+</p>
     <p>Wprowadź dane konieczne do rezerwacji</p>
+    <p>Data rezerwacji: <input type="date" name="Date"/></p>
     <p>Typ biletu: @Html.TextBoxFor(x => x.TypeOfTicket)</p>
     <p>Imie i Nazwisko:@Html.TextBoxFor(x => x.SurName) </p>
     <p>Email: @Html.TextBoxFor(x => x.Email)</p>

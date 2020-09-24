@@ -1,0 +1,22 @@
+﻿@model ReservationRegister
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DeleteReservation</title>
+</head>
+<body>
+    <h1>Czy potwierdzasz usunięcie rekordu ?  </h1>
+    <form asp-action="DeleteReservationRec" method="post">
+        <p>Nazwisko osoby rezerwującej: @Model.SurName</p>
+        <p>Nr rezerwacji<input type="number" name="IdRec" readonly="readonly" value="@Model.Id" /></p>
+        <input type="submit" value="Potwierdź usunięcie" />
+</form>
+
+</body>
+</html>

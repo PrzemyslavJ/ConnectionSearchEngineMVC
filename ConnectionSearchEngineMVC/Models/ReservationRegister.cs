@@ -22,5 +22,6 @@ namespace ConnectionSearchEngineMVC.Models
         public TimeSpan? FirstArrival { get; set; }
         public TimeSpan? SecondArrival { get; set; }
         public string Train { get; set; }
+        public DateTime Date { get; set; }
     }
 }
