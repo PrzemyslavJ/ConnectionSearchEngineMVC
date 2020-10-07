@@ -4,17 +4,51 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ConnectionSearchEngineMVC</title>
-    <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
 <body>
+    <div class="jumbotron text-center" style="margin-bottom:0">
+        <h1> Koleje małopolskie</h1>
+    </div>
 
-   @RenderBody()
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" a href="@Url.Action("Index", "Home")">Strona główna</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Rozkład jazdy </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="@Url.Action("Schedule", new { Option = 1})" runat="server">Trasa nr.1 Kraków - Wieliczka</a>
+                        <a class="dropdown-item" href="@Url.Action("Schedule", new { Option = 2})" runat="server">Trasa nr.1 Wieliczka - Kraków</a>
+                        <a class="dropdown-item" href="@Url.Action("Schedule", new { Option = 3})" runat="server">Trasa nr.2 Kraków - Sędziszów</a>
+                        <a class="dropdown-item" href="@Url.Action("Schedule", new { Option = 4})" runat="server">Trasa nr.2 Sędziszów - Kraków </a>
+                        <a class="dropdown-item" href="@Url.Action("Schedule", new { Option = 5})" runat="server">Trasa nr.3 Kraków - Tarnów</a>
+                        <a class="dropdown-item" href="@Url.Action("Schedule", new { Option = 6})" runat="server">Trasa nr.3 Tarnów - Kraków </a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Contact", "Home")">Informacje</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("AdministratorPage", "Home")">Panel administratora</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    @RenderBody()
 
 
 </body>
 
 
 </html>
-
-

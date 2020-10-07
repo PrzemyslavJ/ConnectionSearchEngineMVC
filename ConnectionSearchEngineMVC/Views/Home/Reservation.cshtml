@@ -1,34 +1,100 @@
 ﻿
 @model ReservationRegister
+
 @{
     ViewData["Title"] = "Reservation";
 }
+<br />
+<p align="center" style="font-size:30px">Rezerwacja </p>
+<br />
 
-<h2>Rezerwacja</h2>
+<div class="container-sm">
+    <h2>Rezerwujesz następującą trasę</h2>
 
-<h1>Rezerwujesz następującą trasę</h1>
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary()
+        
+        <div class="form-group row">
+            <label for="IdR" class="col-sm-2 col-form-label">Nr rezerwacji</label>
+            <div class="col-sm-10">
+                <input type="text" name="Id" readonly="readonly" id="IdR" value=@ViewBag.IdCurrent />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="FirstSt" class="col-sm-2 col-form-label">Stacja początkowa</label>
+            <div class="col-sm-10">
+                <input type="text" name="FirstStation" readonly="readonly" id="FirstSt" value=@ViewBag.FirstSt />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="FirstAr" class="col-sm-2 col-form-label">Godzina odjazdu</label>
+            <div class="col-sm-10">
+                <input type="time" name="FirstArrival" readonly="readonly" id="FirstAr" value=@ViewBag.FirstAr />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="SecondSt" class="col-sm-2 col-form-label">Stacja końcowa</label>
+            <div class="col-sm-10">
+                <input type="text" name="SecondStation" readonly="readonly" id="SecondSt" value=@ViewBag.SecondSt />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="SecondAr" class="col-sm-2 col-form-label">Godzina przyjazdu</label>
+            <div class="col-sm-10">
+                <input type="time" name="SecondArrival" readonly="readonly" id="SecondAr" value=@ViewBag.SecondAr />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Tr" class="col-sm-2 col-form-label">Nr pociągu</label>
+            <div class="col-sm-10">
+                <input type="text" name="Train" readonly="readonly" id="Tr" value=@ViewBag.Tr />
+            </div>
+        </div>
 
-@using (Html.BeginForm())
-{
-    @Html.ValidationSummary()
+        <p align="center" style="font-size:30px">Wprowadź dane konieczne do rezerwacji</p>
 
-<p>
-    <br /> Nr rezerwacji: <input type="text" name="Id" readonly="readonly" value=@ViewBag.IdCurrent />
-    <br />Start: <input type="text" name="FirstStation" readonly="readonly" value=@ViewBag.FirstSt />
-    <br />przyjazd: <input type="time" name="FirstArrival" readonly="readonly" value=@ViewBag.FirstAr />
-    <br />Koniec: <input type="text" name="SecondStation" readonly="readonly" value=@ViewBag.SecondSt />
-    <br />Przyjazd: <input type="time" name="SecondArrival" readonly="readonly" value=@ViewBag.SecondAr />
-    <br />Pociąg: <input type="text" name="Train" readonly="readonly" value=@ViewBag.Tr />
-</p>
-    <p>Wprowadź dane konieczne do rezerwacji</p>
-    <p>Data rezerwacji: <input type="date" name="Date"/></p>
-    <p>Typ biletu: @Html.TextBoxFor(x => x.TypeOfTicket)</p>
-    <p>Imie i Nazwisko:@Html.TextBoxFor(x => x.SurName) </p>
-    <p>Email: @Html.TextBoxFor(x => x.Email)</p>
-    <p>Telefon: @Html.TextBoxFor(x => x.Phone)</p>
-    <input type="submit" value="Dokonaj rezerwacji" />
+        <div class="form-group row">
+            <label for="DataR" class="col-sm-2 col-form-label">Data rezerwacji</label>
+            <div class="col-sm-10">
+                <input type="date" class="form-control" id="DataR" name="Date" placeholder="data rezerwacji">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Tick" class="col-sm-2 col-form-label">Typ biletu</label>
+            <div class="col-sm-10">
+                <select name="TypeOfTicket" id="Tick">
+                    <option value="ulgowy">Ulgowy</option>
+                    <option value="normalny">Normalny</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Name" class="col-sm-2 col-form-label">Imię i Nazwisko</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="Name" name="SurName" placeholder="Imię i naziwsko">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Eml" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="Eml" name="Email" placeholder="Wprowadź Email">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="Ph" class="col-sm-2 col-form-label">Telefon</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="Ph" name="Phone" placeholder="Wprowadź telefon">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <input type="submit" value="Dokonaj rezerwacji" />
+            </div>
+        </div>
 
-}
-
-
-<h2>Na adres e-mail otrzymasz specjalny kod który okażesz kierowcy</h2>
+    }
+    <br>
+    <h2>Na adres e-mail otrzymasz specjalny kod który okażesz kierowcy</h2>
+    <br>
+</div>

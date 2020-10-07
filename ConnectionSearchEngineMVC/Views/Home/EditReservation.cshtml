@@ -1,40 +1,33 @@
 ﻿@model ReservationRegister
-@{
-    Layout = null;
-}
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>EditReservation</title>
-</head>
-<body>
-    <h1>Edycja rekordu w rejestrze rezerwacji na nazwisko @Model.SurName, nr rezerwacji: @Model.Id</h1>
-    
-    @using (Html.BeginForm())
-    {
-        @Html.ValidationSummary()
+    <div class="container">
+        <br />
+        <h1>Edycja rekordu w rejestrze rezerwacji na nazwisko @Model.SurName, nr rezerwacji: @Model.Id</h1>
+        <br />
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary()
+            
+                <p>Nr rezerwacji: <input type="text" class="form-control" readonly="readonly" name="Id" value="@Model.Id" /> </p>
+                <p>
+                    Typ biletu
+                    <select name="TypeOfTicket">
+                        <option value="ulgowy">Ulgowy</option>
+                        <option value="normalny">Normalny</option>
+                    </select>
+                </p>
+                <p>Imię i nazwisko: <input type="text" class="form-control" name="SurName" /></p>
+                <p>Email: <input type="text" class="form-control" name="Email" /></p>
+                <p>Telefon: <input type="text" class="form-control" name="Phone" /></p>
+                <p>Pierwsza stacja: <input type="text" class="form-control" name="FirstStation" /></p>
+                <p>Końcowa stacja: <input type="text" class="form-control" name="SecondStation" /></p>
+                <p>Godzina odjazdu: <input type="time" class="form-control" name="FirstArrival" /></p>
+                <p>Godzina przybycia: <input type="time" class="form-control" name="SecondArrival" /></p>
+                <p>Nr pociągu: <input type="text" class="form-control" name="Train" /></p>
+                <p>Data: <input type="date" class="form-control" name="Date" /></p>
+                <p><input type="submit" class="btn btn-info" value="Edytuj rezerwację" /></p>
+            
+        }
+     </div>
 
-        <p>Nr rezerwacji: <input type="text" class="form-control" readonly="readonly" name="Id" value="@Model.Id" /> </p>
-        <p>Typ biletu
-        <select name="TypeOfTicket">
-            <option value="ulgowy">Ulgowy</option>
-            <option value="normalny">Normalny</option>
-        </select>
-    </p>
-        <p>Imię i nazwisko: <input type="text" class="form-control" name="SurName" /></p>
-        <p>Email: <input type="text" class="form-control" name="Email" /></p>
-        <p>Telefon: <input type="text" class="form-control" name="Phone" /></p>
-        <p>Pierwsza stacja: <input type="text" class="form-control" name="FirstStation" /></p>
-        <p>Końcowa stacja: <input type="text" class="form-control" name="SecondStation" /></p>
-        <p>Godzina odjazdu: <input type="time" class="form-control" name="FirstArrival" /></p>
-        <p>Godzina przybycia: <input type="time" class="form-control" name="SecondArrival" /></p>
-        <p>Nr pociągu: <input type="text" class="form-control" name="Train" /></p>
-        <p>Data: <input type="date" class="form-control" name="Date" /></p>
-        <p><input type="submit" class="btn btn-info" value="Edytuj rezerwację" /></p>
-    }
-
-</body>
-</html>

@@ -3,39 +3,31 @@
 @{
 ViewData["Title"] = "Home Page";
     }
-    <div class="container">
-        <form asp-action="Search">
-            <input type="text" class="form-control" name="FirstPlace"/>
-            <input type="text" class="form-control" name="SecondPlace" />
-            <input type="text" class="form-control" name="Time" />
-            <input type="submit" class="btn btn-info" value="Szukaj" />
-        </form>
-    </div>
-
-    <h2>Stacja początkowa, godzina odjazdu, Stacja końcowa, godzina przyjazdu, Nr pociągu </h2>
-
-    <div class="items">
-
-        <div class="Schedules">
-            <form asp-action="Schedules">
-                <input type="submit" value="Rezerwuj miejsce" />
-                <input type="submit" value="Rezerwuj miejsce" />
-
-            </form>
-
-        </div>
-
-
-       
+    
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Pierwsza stacja </th>
+            <th>Godzina odjazdu </th>
+            <th>Końcowa Stacja</th>
+            <th>Godzina przyjazdu</th>
+            <th>Nr pociągu</th>
+            <th>Rezerwuj trasę</th>
+        </tr>
+    </thead>
+    <tbody>
             @foreach (var x in Model)
             {
-        <form asp-action="Reservation" method="get">
-            <input type="text" name="FS" readonly="readonly" value=@x.FirstStation />
-            <input type="time" name="FA" readonly="readonly" value=@x.FirstArrival />
-            <input type="text" name="SS" readonly="readonly" value=@x.SecondStation />
-            <input type="time" name="SA" readonly="readonly" value=@x.SecondArrival />
-            <input type="text" name="T" readonly="readonly" value=@x.Train />
-            <input type="submit" value="Rezerwuj miejsce" />
-        </form>
+            <form asp-action="Reservation" method="get">
+                <tr>
+                    <td><input type="text" name="FS" readonly="readonly" value=@x.FirstStation /></td>
+                    <td><input type="time" name="FA" readonly="readonly" value=@x.FirstArrival /></td>
+                    <td><input type="text" name="SS" readonly="readonly" value=@x.SecondStation /></td>
+                    <td><input type="time" name="SA" readonly="readonly" value=@x.SecondArrival /></td>
+                    <td><input type="text" name="T" readonly="readonly" value=@x.Train /></td>
+                    <td><input type="submit" value="Rezerwuj miejsce" /></td>
+                </tr>
+            </form>
             }
-</div>
+    </tbody>
+</table>

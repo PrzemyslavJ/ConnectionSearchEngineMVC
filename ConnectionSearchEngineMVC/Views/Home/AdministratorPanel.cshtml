@@ -1,8 +1,5 @@
 ﻿
 @model IEnumerable<ConnectionSearchEngineMVC.Models.ReservationRegister>
-@{
-    Layout = null;
-}
 
 <!DOCTYPE html>
 
@@ -10,11 +7,15 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>AdministratorPanel</title>
+    <meta charset="utf-8">
 </head>
 <body>
-    <p align="center">Panel administratora</p>
-    <p>Rejestr rezerwacji </p>
-    <table class="table">
+    <div class="container">
+        <p></p>
+    <p align="center" style="font-size:30px">Panel administratora</p>
+        <p></p>
+    <p align="center" style="font-size:25px">Rejestr rezerwacji </p>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Nr</th>
@@ -26,6 +27,8 @@
                 <th>Godzina przybycia </th>
                 <th>Nr pociągu </th>
                 <th>Data rezerwacji </th>
+                <th>Edytuj </th>
+                <th>Usuń </th>
             </tr>
         </thead>
         <tbody>
@@ -48,6 +51,7 @@
 
         </tbody>
     </table>
+        </div>
 
 
 </body>

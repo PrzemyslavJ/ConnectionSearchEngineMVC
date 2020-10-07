@@ -3,40 +3,23 @@
     ViewData["Title"] = "Home Page";
 }
 <div class="container">
-    <h1>Koleje Małopolskie</h1>
-    <h3>Wyszukaj Połączenie Szybkiej koleji aglomeracyjnej</h3>
+    <p></p>
+    <p align="center" style="font-size:30px">Wyszukaj połączenie Szybkiej kolei aglomeracyjnej</p>
     <form asp-action="Search">
-        <div id="in1"> <input type="text" class="form-control" name="FirstPlace" /> </div>
-        <span></span>
-        <div id="in2"> <input type="text" class="form-control" name="SecondPlace" />  </div>
-        <span></span>
-        <div id="in3"> <input type="time" class="form-control" name="Time"/>  </div>
-        <span></span>
-        <div id="in4"> <input type="submit" class="btn btn-info" value="Szukaj" /> </div>
+        <div class="form-group">
+            <label for="text">Pierwsza stacja </label>
+            <input type="text" class="form-control" name="FirstPlace" />
+        </div>
+        <div class="form-group">
+            <label for="text">Końcowa stacja </label>
+            <input type="text" class="form-control" name="SecondPlace" />
+        </div>
+        <div class="form-group">
+            <label for="time">Czas </label>
+            <input type="time" class="form-control" name="Time" />
+        </div>
+        <button type="submit" class="btn btn-primary">Szukaj </button>
     </form>
 </div>
-<div>
-<form asp-action="Schedule" method="post">
-    <p>Wybierz rozkład jazdy</p>
-    <select name="Option">
-        <option value="1"> Rozkład jazdy: trasa nr.1 Kraków - Wieliczka </option>
-        <option value="2"> Rozkład jazdy: trasa nr.1 Wieliczka - Kraków </option>
-        <option value="3"> Rozkład jazdy trasa nr.2 Kraków - Sędziszów </option>
-        <option value="4"> Rozkład jazdy trasa nr.2 Sędziszów - Kraków </option>
-        <option value="5"> Rozkład jazdy: trasa nr.3 Kraków - Tarnów </option>
-        <option value="6"> Rozkład jazdy trasa nr.3 Tarnów - Kraków </option>
-    </select>
-    <input type="submit" name="Rozkład jazdy" value="Wyświetl rozkład jazdy" />
-    </p>
-</form>
-</div>
-    <div>
-        <h3>Zaloguj się do panelu Administratora</h3>
-        @ViewBag.FailCommunicate
-        <form asp-action="AdministratorPanel">
-            <p> <input type="text" name="Login" />  </p>
-            <p> <input password="text" name="Password" /> </p>
-            <input type="submit" value="Loguj" />
-        </form>
-
-    </div>
+<br />
+    

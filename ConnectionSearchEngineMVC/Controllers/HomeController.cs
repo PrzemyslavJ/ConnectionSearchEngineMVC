@@ -12,6 +12,7 @@ using System.Data.SqlClient;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
+using CaptchaMvc.HtmlHelpers;
 
 namespace ConnectionSearchEngineMVC.Controllers
 {
@@ -23,13 +24,23 @@ namespace ConnectionSearchEngineMVC.Controllers
             return View();
         }
 
+        public IActionResult AdministratorPage()
+        {
+            return View();
+        }
+
+        public IActionResult Contact()
+        {
+            return View();
+        }
+
         RailwayConnectionOfLesserPolandContext context = new RailwayConnectionOfLesserPolandContext();
         
 
         [HttpPost]
         public IActionResult Search(string FirstPlace, string SecondPlace, TimeSpan time)
         {
-            TimeSpan timeBorder = time.Add(TimeSpan.FromHours(3));
+            TimeSpan timeBorder = time.Add(TimeSpan.FromHours(23));
 
             var AllRecords = context.Ska1KrkWiel.Select(x => new { x.Id, x.Station, x.Train, x.TimeArrival, IdRoute = 1 }).
                               Union(context.Ska1WielKrk.Select(x => new { x.Id, x.Station, x.Train, x.TimeArrival, IdRoute = 2 })).
@@ -90,6 +101,7 @@ namespace ConnectionSearchEngineMVC.Controllers
             ViewBag.Tr = T;
             return View("Reservation");
         }
+        
 
         public IActionResult AdministratorPanel(string Login, string Password)
 
@@ -101,7 +113,7 @@ namespace ConnectionSearchEngineMVC.Controllers
             else
             {
                 ViewBag.FailCommunicate = "Błędne logowanie !";
-                return View("Index");
+                return View("AdministratorPage");
             }
         }
 
@@ -123,7 +135,7 @@ namespace ConnectionSearchEngineMVC.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet]
         public IActionResult Schedule(int Option)
         {
             List<ScheduleStd> schedule = new List<ScheduleStd>();

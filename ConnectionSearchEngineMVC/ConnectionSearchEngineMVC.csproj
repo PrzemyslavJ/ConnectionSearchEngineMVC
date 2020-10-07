@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="bootstrap" Version="4.5.2" />
+    <PackageReference Include="CaptchaMvc.Mvc5" Version="1.5.0" />
     <PackageReference Include="EntityFramework" Version="6.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" />
