@@ -12,13 +12,22 @@ using System.Data.SqlClient;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
-using CaptchaMvc.HtmlHelpers;
+using Ninject;
 
 namespace ConnectionSearchEngineMVC.Controllers
 {
     public class HomeController : Controller
     {
-        [HttpGet]
+        private IResultRepository RoutesRepository;
+        private IgetRegisterRecords RegisterRepository;
+        RailwayConnectionOfLesserPolandContext context = new RailwayConnectionOfLesserPolandContext();
+
+        public HomeController(IResultRepository RoutesRepository, IgetRegisterRecords RegisterRepository)
+        {
+            this.RoutesRepository = RoutesRepository;
+            this.RegisterRepository = RegisterRepository;
+        }
+        
         public IActionResult Index()
         {
             return View();
@@ -33,66 +42,27 @@ namespace ConnectionSearchEngineMVC.Controllers
         {
             return View();
         }
-
-        RailwayConnectionOfLesserPolandContext context = new RailwayConnectionOfLesserPolandContext();
         
-
         [HttpPost]
         public IActionResult Search(string FirstPlace, string SecondPlace, TimeSpan time)
         {
-            TimeSpan timeBorder = time.Add(TimeSpan.FromHours(23));
-
-            var AllRecords = context.Ska1KrkWiel.Select(x => new { x.Id, x.Station, x.Train, x.TimeArrival, IdRoute = 1 }).
-                              Union(context.Ska1WielKrk.Select(x => new { x.Id, x.Station, x.Train, x.TimeArrival, IdRoute = 2 })).
-                              Union(context.Ska2KrkSed.Select(x => new { x.Id, x.Station, x.Train, x.TimeArrival, IdRoute = 3 })).
-                              Union(context.Ska2SedKrk.Select(x => new { x.Id, x.Station, x.Train, x.TimeArrival, IdRoute = 4 })).
-                              Union(context.Ska3KrkTar.Select(x => new { x.Id, x.Station, x.Train, x.TimeArrival, IdRoute = 5 })).
-                              Union(context.Ska3TarKrk.Select(x => new { x.Id, x.Station, x.Train, x.TimeArrival, IdRoute = 6 }));
-
-
-            var FirstResult = from x in AllRecords
-                              where x.Station == FirstPlace && (x.TimeArrival >= time && x.TimeArrival <= timeBorder)
-                              select new { x.Id, x.Station, x.Train, x.TimeArrival, x.IdRoute };
-
-            List<ListToModel> ModelList = new List<ListToModel>();
-
-
-            foreach (var x in FirstResult)
+            var ListSearch = RoutesRepository.SearchResultRecords(FirstPlace, SecondPlace, time, RoutesRepository.GetAllRoutes);
+            
+            if (ListSearch.Count() > 0)
             {
-                var SecondResult = from y in AllRecords
-                                   where y.Station == SecondPlace && y.Train == x.Train && y.IdRoute == x.IdRoute && y.Id > x.Id
-                                   select new { y.Station, y.TimeArrival };
-
-                if (SecondResult.Count() > 0)
-                {
-                    string LastPlace = "";
-                    TimeSpan? SecondArrival = new TimeSpan();
-
-                    foreach (var p in SecondResult)
-                    {
-                        LastPlace = p.Station;
-                        SecondArrival = p.TimeArrival;
-                    }
-
-                    ModelList.Add(new ListToModel(x.Station, LastPlace, x.TimeArrival, SecondArrival, x.Train));
-                }
-            }
-            if (ModelList.Count() > 0)
-            {
-                return View("Search", ModelList);
+                return View("Search", ListSearch);
             }
             else
             {
                 ViewBag.Communicate = "Nie znaleziono szukanego połączenia !";
                 return View("CommunicateView");
             }
-
         }
-
-
+        
         [HttpGet]
         public IActionResult Reservation(string FS, TimeSpan? FA, string SS, TimeSpan? SA, string T)
         {
+            RailwayConnectionOfLesserPolandContext context = new RailwayConnectionOfLesserPolandContext();
             ViewBag.IdCurrent = context.ReservationRegister.Count() + 1;
             ViewBag.FirstSt = FS;
             ViewBag.FirstAr = FA;
@@ -102,13 +72,11 @@ namespace ConnectionSearchEngineMVC.Controllers
             return View("Reservation");
         }
         
-
         public IActionResult AdministratorPanel(string Login, string Password)
-
         {
             if (Login == "Przemek" || Password == "1234")
             {
-                return View("AdministratorPanel",context.ReservationRegister);
+                return View("AdministratorPanel", RegisterRepository.GetAllRegisters);
             }
             else
             {
@@ -120,10 +88,10 @@ namespace ConnectionSearchEngineMVC.Controllers
         [HttpPost]
         public IActionResult Reservation(ReservationRegister reservationRegister)
         {
+            RailwayConnectionOfLesserPolandContext context = new RailwayConnectionOfLesserPolandContext();
             if (ModelState.IsValid)
             {
-                context.ReservationRegister.Add(reservationRegister);
-                context.SaveChanges();
+                RegisterRepository.Add(reservationRegister);
                 ViewBag.Communicate = "Dokonano pomyślnej rezerwacji !";
                 return View("CommunicateView");
             }
@@ -138,57 +106,14 @@ namespace ConnectionSearchEngineMVC.Controllers
         [HttpGet]
         public IActionResult Schedule(int Option)
         {
-            List<ScheduleStd> schedule = new List<ScheduleStd>();
-            switch (Option)
-            {
-                case 1:
-                    ViewBag.Name= "Trasa nr.1 Kraków - Wieliczka";
-                    var schedules = context.Ska1KrkWiel.Select(x => new { x.Station, x.Train, x.TimeArrival }).OrderBy(x => x.Station);
-                    foreach (var i in schedules)
-                        schedule.Add(new ScheduleStd(i.Station, i.Train, i.TimeArrival));
-                    break;
-                case 2:
-                    ViewBag.Name = "Trasa nr.2 Wieliczka - Kraków";
-                    schedules = context.Ska1WielKrk.Select(x => new { x.Station, x.Train, x.TimeArrival }).OrderBy(x => x.Train);
-                    foreach (var i in schedules)
-                        schedule.Add(new ScheduleStd(i.Station, i.Train, i.TimeArrival));
-                    break;
-                case 3:
-                    ViewBag.Name = "Trasa nr.2 Kraków - Sędziszów";
-                    schedules = context.Ska2KrkSed.Select(x => new { x.Station, x.Train, x.TimeArrival }).OrderBy(x => x.Train);
-                    foreach (var i in schedules)
-                        schedule.Add(new ScheduleStd(i.Station, i.Train, i.TimeArrival));
-                    break;
-                case 4:
-                    ViewBag.Name = "Trasa nr.2 Sędziszów - Kraków";
-                    schedules = context.Ska2SedKrk.Select(x => new { x.Station, x.Train, x.TimeArrival }).OrderBy(x => x.Train);
-                    foreach (var i in schedules)
-                        schedule.Add(new ScheduleStd(i.Station, i.Train, i.TimeArrival));
-                    break;
-                case 5:
-                    ViewBag.Name = "Trasa nr.3 Kraków - Tarnów";
-                    schedules = context.Ska3KrkTar.Select(x => new { x.Station, x.Train, x.TimeArrival }).OrderBy(x => x.Train);
-                    foreach (var i in schedules)
-                        schedule.Add(new ScheduleStd(i.Station, i.Train, i.TimeArrival));
-                    break;
-                case 6:
-                    ViewBag.Name = "Trasa nr.3 Tarnów - Kraków";
-                    schedules = context.Ska3TarKrk.Select(x => new { x.Station, x.Train, x.TimeArrival }).OrderBy(x => x.Train);
-                    foreach (var i in schedules)
-                        schedule.Add(new ScheduleStd(i.Station, i.Train, i.TimeArrival));
-                    break;
-                default:
-                    schedule = null;
-                    break;
-            }
-            
-            return View("Schedule", schedule);
+            string[] NamesOfRoutes = new string[] { "Kraków - Wieliczka", "Wieliczka - Kraków", "Kraków - Sędziszów", "Sędziszów - Kraków", "Kraków - Tarnów", "Tarnów - Kraków" };
+            ViewBag.Name = NamesOfRoutes[Option - 1];
+            return View("Schedule", RoutesRepository.SingleSchedule(Option));
         }
 
         public IActionResult EditReservation(int Id)
         {
-            var EditableRes = context.ReservationRegister.Where(x => x.Id == Id).FirstOrDefault();
-            return View("EditReservation", EditableRes);
+            return View("EditReservation", RegisterRepository.select(Id));
         }
 
         [HttpPost]
@@ -196,11 +121,7 @@ namespace ConnectionSearchEngineMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var EditableRes = context.ReservationRegister.Where(x => x.Id == EditRecord.Id).FirstOrDefault();
-                context.ReservationRegister.Remove(EditableRes);
-                context.SaveChanges();
-                context.ReservationRegister.Add(EditRecord);
-                context.SaveChanges();
+                RegisterRepository.Update(EditRecord);
                 ViewBag.Communicate = "Dokonano pomyślnej edycji rezerwacji !";
                 return View("CommunicateView");
             }
@@ -214,16 +135,13 @@ namespace ConnectionSearchEngineMVC.Controllers
 
         public IActionResult DeleteReservation(int Id)
         {
-            var ToDeleteRec = context.ReservationRegister.Where(x => x.Id == Id).FirstOrDefault();
-            return View("DeleteReservation", ToDeleteRec);
+            return View("DeleteReservation", RegisterRepository.select(Id));
         }
 
         [HttpPost]
         public IActionResult DeleteReservationRec(int IdRec)
         {
-                var DeleteRec = context.ReservationRegister.Where(x => x.Id == IdRec).FirstOrDefault();
-                context.ReservationRegister.Remove(DeleteRec);
-                context.SaveChanges();
+                RegisterRepository.Delete(IdRec);
                 ViewBag.Communicate = "Dokonano pomyślnego usunięcia rezerwacji !";
                 return View("CommunicateView");
             

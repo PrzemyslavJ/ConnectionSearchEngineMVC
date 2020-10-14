@@ -6,6 +6,7 @@ namespace ConnectionSearchEngineMVC.Models
 {
     public partial class RailwayConnectionOfLesserPolandContext : DbContext
     {
+        
         public virtual DbSet<Ska1KrkWiel> Ska1KrkWiel { get; set; }
         public virtual DbSet<Ska1WielKrk> Ska1WielKrk { get; set; }
         public virtual DbSet<Ska2KrkSed> Ska2KrkSed { get; set; }

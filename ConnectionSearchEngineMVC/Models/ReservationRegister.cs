@@ -8,7 +8,9 @@ namespace ConnectionSearchEngineMVC.Models
 {
     public partial class ReservationRegister
     {
-        public int Id {get; set;}
+        
+        [Key]
+        public int Id { get; set; }
         [Required(ErrorMessage = "Proszę podać typ biletu! ")]
         public string TypeOfTicket { get; set; }
         [Required(ErrorMessage = "Proszę podać swoje imię i nazwisko! ")]
@@ -23,5 +25,6 @@ namespace ConnectionSearchEngineMVC.Models
         public TimeSpan? SecondArrival { get; set; }
         public string Train { get; set; }
         public DateTime Date { get; set; }
+        
     }
 }
