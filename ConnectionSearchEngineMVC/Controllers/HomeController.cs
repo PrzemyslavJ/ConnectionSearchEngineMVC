@@ -74,7 +74,7 @@ namespace ConnectionSearchEngineMVC.Controllers
         
         public IActionResult AdministratorPanel(string Login, string Password)
         {
-            if (Login == "Przemek" || Password == "1234")
+            if (Login == "Przemek" && Password == "1234")
             {
                 return View("AdministratorPanel", RegisterRepository.GetAllRegisters);
             }
